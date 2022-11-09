@@ -12,23 +12,16 @@ context('Exercicio - Testes End-to-end - Fluxo de pedido', () => {
 
     beforeEach(() => {
         cy.visit('minha-conta')
+        cy.login('aluno_ebac@teste.com', 'teste@teste.com')
     });
 
     it('Deve fazer um pedido na loja Ebac Shop de ponta a ponta', () => {
         var quantidade = 4
 
-        cy.get('#username').type(perfil.usuario)
-        cy.get('#password').type(perfil.senha)
-        cy.get('.woocommerce-form > .button').click()
         cy.get('.page-title').should('contain', 'Minha conta')
         cy.get('#primary-menu > .menu-item-629 > a').click()
         cy.get('[class="product-block grid"]')
-            .contains('Ajax Full-Zip Sweatshirt').click()
-        cy.get('.button-variable-item-L').click()
-        cy.get('.button-variable-item-Blue').click()
-        cy.get('.input-text').clear().type(quantidade)
-        cy.get('.single_add_to_cart_button').click()
-
+        cy.addProdutos('Ajax Full-Zip Sweatshirt', 'L', 'Blue', '4')
         cy.get('.dropdown-toggle > .mini-cart-items').should('contain', quantidade)
         cy.get('.woocommerce-message').should('contain', quantidade + ' × “Ajax Full-Zip Sweatshirt” foram adicionados no seu carrinho.')
         cy.get('.dropdown-toggle > .text-skin > .icon-basket').click()
